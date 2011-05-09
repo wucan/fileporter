@@ -12,11 +12,12 @@ import sys
 import time
 import argparse
 import shutil
+import fnmatch
 
 
 class FilePorter:
  
-    def __init__(self, src="", dst="", pattern='*'):
+    def __init__(self, src="", dst="", pattern=['*']):
         self.src = src
         self.dst = dst
         self.pattern = pattern
@@ -40,6 +41,14 @@ class FilePorter:
             for f in os.listdir(src_full_path):
                 self.move_file(os.path.join(sub_path, f))
         else:
+            match = False
+            for pat in self.pattern:
+                if fnmatch.fnmatch(os.path.basename(src_full_path), pat):
+                    print('match pat:', pat)
+                    match = True
+                    break;
+            if not match:
+                return
             if self.is_file_busying(src_full_path):
                 print(src_full_path, 'busy!')
                 return
@@ -78,9 +87,12 @@ if __name__ == "__main__":
     parser.add_argument('--dst', dest='dst', type=str,
                         required=True, nargs=1,
                         help='destinaiton directory')
+    parser.add_argument('--pat', dest='pattern', type=str,
+                        required=False, nargs='+',
+                        help='file pattern')
     args = parser.parse_args()
     print(args)
-    porter = FilePorter(args.src[0], args.dst[0], '*.ts')
+    porter = FilePorter(args.src[0], args.dst[0], args.pattern)
     if porter:
         porter.run()
     sys.exit()
