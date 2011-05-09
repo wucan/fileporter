@@ -11,6 +11,7 @@ import os.path
 import sys
 import time
 import argparse
+import shutil
 
 
 class FilePorter:
@@ -43,9 +44,19 @@ class FilePorter:
                 print(src_full_path, 'busy!')
                 return
             dst_full_path = os.path.join(self.dst, sub_path)
-            print('move', src_full_path, '=>', dst_full_path)
+            print('move', src_full_path, '=>', dst_full_path, '...')
             try:
-                os.renames(src_full_path, dst_full_path)
+                #os.rename() will kill the src dir on windows!
+                #os.renames(src_full_path, dst_full_path)
+
+                #shutil.move() failed to already exist dst files in windows
+                if not os.path.exists(os.path.dirname(dst_full_path)):
+                    os.mkdir(os.path.dirname(dst_full_path))
+                if os.path.exists(dst_full_path):
+                    print(dst_full_path, 'exist! remove it first')
+                    os.remove(dst_full_path)
+                shutil.move(src_full_path, dst_full_path)
+                print('move', src_full_path, '=>', dst_full_path, 'done')
                 time.sleep(1)
             except Exception as ex:
                 print('move failed! ex:', ex)
