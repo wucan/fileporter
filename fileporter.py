@@ -39,6 +39,9 @@ class FilePorter:
             for f in os.listdir(src_full_path):
                 self.move_file(os.path.join(sub_path, f))
         else:
+            if self.is_file_busying(src_full_path):
+                print(src_full_path, 'busy!')
+                return
             dst_full_path = os.path.join(self.dst, sub_path)
             print('move', src_full_path, '=>', dst_full_path)
             try:
@@ -46,6 +49,15 @@ class FilePorter:
                 time.sleep(1)
             except Exception as ex:
                 print('move failed! ex:', ex)
+
+    def is_file_busying(self, path):
+        try:
+            f = open(path, 'w')
+            f.close()
+            return False
+        except IOError as err:
+            print(err)
+            return False
  
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='File Porter')
