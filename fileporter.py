@@ -1,3 +1,11 @@
+# file porter
+#
+# porter files from one directory to another with patterns and more
+
+
+__version__ = "0.1"
+
+
 import os
 import os.path
 import sys
