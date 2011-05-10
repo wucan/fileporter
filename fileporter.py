@@ -36,8 +36,11 @@ class FilePorter:
 
     def run(self):
         while True:
-            for f in os.listdir(self.src):
-                self.move_file(f)
+            try:
+                for f in os.listdir(self.src):
+                    self.move_file(f)
+            except Exception as ex:
+                print(ex)
             time.sleep(1)
 
     def move_file(self, sub_path):
