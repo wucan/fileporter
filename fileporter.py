@@ -21,6 +21,8 @@ class FilePorter:
         self.src = src
         self.dst = dst
         self.pattern = pattern
+        print('source:', self.src)
+        print('destination:', self.dst)
 
         if not os.path.exists(dst):
             try:
@@ -60,7 +62,8 @@ class FilePorter:
 
                 #shutil.move() failed to already exist dst files in windows
                 if not os.path.exists(os.path.dirname(dst_full_path)):
-                    os.mkdir(os.path.dirname(dst_full_path))
+                    print('create dir', os.path.dirname(dst_full_path))
+                    self.makedirs_1(os.path.dirname(dst_full_path))
                 if os.path.exists(dst_full_path):
                     print(dst_full_path, 'exist! remove it first')
                     os.remove(dst_full_path)
@@ -78,6 +81,31 @@ class FilePorter:
         except IOError as err:
             print(err)
             return False
+
+    def makedirs(self, path):
+        dirs = path.split(os.path.sep)
+        print(dirs)
+        full_dir = ""
+        for d in dirs:
+            full_dir = os.path.join(full_dir, d)
+            if not os.path.exists(full_dir):
+                print('use os.makedirs() to create dir', full_dir)
+                os.mkdir(full_dir)
+
+    def makedirs_1(self, path):
+        dirs = path.split(os.path.sep)
+        print(dirs)
+        rootdir = os.path.abspath(os.curdir)
+        print('rootdir is', rootdir)
+        parent_dir = rootdir
+        for d in dirs:
+            print('chdir() to dir', parent_dir)
+            os.chdir(parent_dir)
+            if not os.path.exists(d):
+                print('use os.makedirs() to create dir', d)
+                os.mkdir(d)
+            parent_dir = os.path.join(parent_dir, d)
+        os.chdir(rootdir)
  
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='File Porter')
