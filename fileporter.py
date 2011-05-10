@@ -21,6 +21,9 @@ class FilePorter:
         self.src = src
         self.dst = dst
         self.pattern = pattern
+
+        self.src = os.path.realpath(src)
+        self.dst = os.path.realpath(dst)
         print('source:', self.src)
         print('destination:', self.dst)
 
@@ -63,7 +66,7 @@ class FilePorter:
                 #shutil.move() failed to already exist dst files in windows
                 if not os.path.exists(os.path.dirname(dst_full_path)):
                     print('create dir', os.path.dirname(dst_full_path))
-                    self.makedirs_1(os.path.dirname(dst_full_path))
+                    os.makedirs(os.path.dirname(dst_full_path))
                 if os.path.exists(dst_full_path):
                     print(dst_full_path, 'exist! remove it first')
                     os.remove(dst_full_path)
@@ -75,7 +78,7 @@ class FilePorter:
 
     def is_file_busying(self, path):
         try:
-            f = open(path, 'w')
+            f = open(path, 'a')
             f.close()
             return False
         except IOError as err:
