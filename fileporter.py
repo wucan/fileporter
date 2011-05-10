@@ -79,7 +79,7 @@ class FilePorter:
             f.close()
             return False
         except IOError as err:
-            return False
+            return True
 
     def makedirs(self, path):
         dirs = path.split(os.path.sep)
