@@ -49,31 +49,28 @@ class FilePorter:
             match = False
             for pat in self.pattern:
                 if fnmatch.fnmatch(os.path.basename(src_full_path), pat):
-                    print('match pat:', pat)
                     match = True
                     break;
             if not match:
                 return
             if self.is_file_busying(src_full_path):
-                print(src_full_path, 'busy!')
                 return
             dst_full_path = os.path.join(self.dst, sub_path)
-            print('move', src_full_path, '=>', dst_full_path, '...')
+            print('move', src_full_path, '=>', os.path.dirname(dst_full_path), end=' ... ')
             try:
                 #os.rename() will kill the src dir on windows!
                 #os.renames(src_full_path, dst_full_path)
 
                 #shutil.move() failed to already exist dst files in windows
                 if not os.path.exists(os.path.dirname(dst_full_path)):
-                    print('create dir', os.path.dirname(dst_full_path))
                     os.makedirs(os.path.dirname(dst_full_path))
                 if os.path.exists(dst_full_path):
-                    print(dst_full_path, 'exist! remove it first')
                     os.remove(dst_full_path)
                 shutil.move(src_full_path, dst_full_path)
-                print('move', src_full_path, '=>', dst_full_path, 'done')
+                print('Done.')
                 time.sleep(0.01)
             except Exception as ex:
+                print('Failed!')
                 print('move failed! ex:', ex)
 
     def is_file_busying(self, path):
@@ -82,7 +79,6 @@ class FilePorter:
             f.close()
             return False
         except IOError as err:
-            print(err)
             return False
 
     def makedirs(self, path):
