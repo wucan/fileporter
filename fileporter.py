@@ -72,7 +72,7 @@ class FilePorter:
                     os.remove(dst_full_path)
                 shutil.move(src_full_path, dst_full_path)
                 print('move', src_full_path, '=>', dst_full_path, 'done')
-                time.sleep(1)
+                time.sleep(0.01)
             except Exception as ex:
                 print('move failed! ex:', ex)
 
