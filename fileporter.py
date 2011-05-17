@@ -117,6 +117,8 @@ if __name__ == "__main__":
                         help='file pattern')
     args = parser.parse_args()
     print(args)
+    if not args.pattern:
+        args.pattern = "*.*"
     porter = FilePorter(args.src[0], args.dst[0], args.pattern)
     if porter:
         porter.run()
