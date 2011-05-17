@@ -3,7 +3,7 @@
 # porter files from one directory to another with patterns and more
 
 
-__version__ = "0.3"
+__version__ = "0.4"
 
 
 import os
