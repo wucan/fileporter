@@ -75,7 +75,7 @@ class FilePorter:
                 time.sleep(0.01)
             except Exception as ex:
                 print('Failed!')
-                print('move failed! ex:', ex)
+                #print('move failed! ex:', ex)
 
     def is_file_busying(self, path):
         try:
