@@ -27,6 +27,8 @@ class FilePorter:
         print('source:', self.src)
         print('destination:', self.dst)
 
+        self.dst_base_dir = os.path.split(self.dst)[1] + '/'
+
     def run(self):
         while True:
             try:
@@ -52,8 +54,7 @@ class FilePorter:
             if self.is_file_busying(src_full_path):
                 return
             dst_full_path = os.path.join(self.dst, sub_path)
-            dst_parent = os.path.split(os.path.dirname(dst_full_path))[1] + '/'
-            print('move', src_full_path, '=>', dst_parent, end=' ... ')
+            print('move', src_full_path, '=>', self.dst_base_dir, end=' ... ')
             sys.stdout.flush()
             try:
                 #os.rename() will kill the src dir on windows!
