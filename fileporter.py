@@ -52,7 +52,8 @@ class FilePorter:
             if self.is_file_busying(src_full_path):
                 return
             dst_full_path = os.path.join(self.dst, sub_path)
-            print('move', src_full_path, '=>', os.path.dirname(dst_full_path), end=' ... ')
+            dst_parent = os.path.split(os.path.dirname(dst_full_path))[1] + '/'
+            print('move', src_full_path, '=>', dst_parent, end=' ... ')
             sys.stdout.flush()
             try:
                 #os.rename() will kill the src dir on windows!
