@@ -27,13 +27,6 @@ class FilePorter:
         print('source:', self.src)
         print('destination:', self.dst)
 
-        if not os.path.exists(dst):
-            try:
-                os.makedirs(dst)
-            except Exception as ex:
-                print('create destination dir:', dst)
-                raise
-
     def run(self):
         while True:
             try:
